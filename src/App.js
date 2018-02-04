@@ -38,7 +38,7 @@ class Editor extends React.Component {
     this.quillRef.insertText(position, 'Hello, World! ')
   }
   
-  getContents = ()=>{
+  saveContents = ()=>{
     this.setState({
       deltas: this.quillRef.getContents()
     },()=>{
@@ -46,7 +46,7 @@ class Editor extends React.Component {
     })
   }
 
-  setContents=()=>{
+  loadContents=()=>{
     this.quillRef.setContents(this.state.deltas)
   }
 
@@ -56,11 +56,11 @@ class Editor extends React.Component {
     })
   }
 
-  handleTextChange=(value)=>{
-    this.setState({
-      value
-    })
-  }
+  // handleTextChange=(value)=>{
+  //   this.setState({
+  //     value
+  //   })
+  // }
 
   getStateValue=()=>{
     console.log("this.state.value>>>",this.state.value)
@@ -78,8 +78,8 @@ class Editor extends React.Component {
           value={this.state.deltas}
         />
         <button onClick={this.insertText}>Insert Text</button>
-        <button onClick={this.getContents}>get Deltas Contents Object</button>
-        <button onClick={this.setContents}>set Deltas Contents Object</button>
+        <button onClick={this.saveContents}>save Deltas Contents Object</button>
+        <button onClick={this.loadContents}>load Deltas Contents Object</button>
         <button onClick={this.getStateValue}>get State Value(string)</button>
         <button onClick={this.toggleReadOnly}>Toggle ReadOnly</button>
       </div>
