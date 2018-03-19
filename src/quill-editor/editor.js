@@ -84,7 +84,7 @@ class Editor extends Component {
     return (
       <div className="editor">
         <ReactQuill
-          style={{ height: "200px" }}
+          style={{ height: "500px" }}
           ref={(el) => { this.reactQuillRef = el }}
           modules={Editor.modules}
           formats={Editor.formats}
