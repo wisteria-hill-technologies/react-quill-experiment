@@ -1,5 +1,5 @@
-# Quill-image-resize-module Integration
-This is a simple experiment to display how to use React Quill Editor with the quill-image-resize-module library.
+# React-Quill Integration
+This is a simple experiment to learn how to use React Quill Editor and expand it with other functionalities such as video and image resizing.
 
 With React-Quill, you can save the value of the editor either as a HTML string or Delta (object).
 To integrate quill-image-module, it is important to do the following to make it work.

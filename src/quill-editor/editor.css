@@ -1,0 +1,66 @@
+.editor {
+  border: 1px solid black;
+  margin: 20px;
+  padding: 10px;
+}
+.quill {
+  border: 1px solid blue;
+}
+
+.button-panel {
+  padding: 10px;
+}
+
+/*** fONTS CONTENTS IN THE QUILL TOOLBAR DROPDOWN LIST NEED TO BE CHANGED BY BELOW CSS
+/*--- Sans-Serif ----*/
+  
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value=sans-serif]::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=sans-serif]::before {
+  content: 'Sans-Serif';
+  font-family: sans-serif;
+}
+
+/*--- Sofia ----*/
+.ql-font-sofia {
+  font-family: 'Sofia', sans-serif;
+}
+  
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value=sofia]::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=sofia]::before {
+  content: 'Sofia';
+  font-family: 'Sofia', sans-serif;
+}
+
+/*--- Inconsolata ----*/
+.ql-font-inconsolata {
+  font-family: 'Inconsolata', sans-serif;
+}
+
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value=inconsolata]::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=inconsolata]::before {
+  content: 'Inconsolata';
+  font-family: 'Inconsolata', sans-serif;
+}
+
+/*--- Roboto ----*/
+.ql-font-roboto {
+  font-family: 'Roboto', sans-serif;
+}
+  
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value=roboto]::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=roboto]::before {
+  content: 'Roboto';
+  font-family: 'Roboto', sans-serif;
+}
+
+/*--- Mirza ----*/
+.ql-font-mizra {
+  font-family: 'Mirza', sans-serif;
+}
+  
+.ql-bubble .ql-picker.ql-font .ql-picker-label[data-value=mirza]::before,
+.ql-bubble .ql-picker.ql-font .ql-picker-item[data-value=mirza]::before {
+  content: 'Mirza';
+  font-family: 'Mirza', sans-serif;
+}
+
