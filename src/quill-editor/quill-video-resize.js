@@ -1,5 +1,4 @@
 import ReactQuill, { Quill } from 'react-quill'
-
 const BlockEmbed = Quill.import('blots/block/embed');
 const Parchment = Quill.import('parchment');
 const ATTRIBUTES = [ 'height', 'width' ];

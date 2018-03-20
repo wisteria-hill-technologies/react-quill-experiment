@@ -21,5 +21,9 @@ Also, add 'width' to Editor.formats.
 
 Check App.js for the example.
 
+Another test:
+```
+https://codepen.io/nfabacus/pen/Ldxomy
+```
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).

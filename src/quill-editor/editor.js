@@ -2,34 +2,45 @@ import React, { Component } from 'react'
 
 import 'react-quill/dist/quill.bubble.css'
 import ReactQuill, { Quill } from 'react-quill'
+// import BlotFormatter from 'quill-blot-formatter'
 
 import { ImageResize } from './imageResize'
 import { ImageImport } from './imageImport'
-// import { Video } from './quill-video-resize.js'
+
 import './editor.css'
+
+import { Svideo, Mvideo } from './quillVideoFormats'
+// import { Video } from './quill-video-resize'
+// import './quill-video-resize.css'
 
 // Add fonts to whitelist
 var Font = Quill.import('formats/font')
 // We do not add Sans Serif since it is the default
 Font.whitelist = ['sans-serif', 'inconsolata', 'roboto', 'mirza', 'sofia']
 
+
 Quill.register('modules/imageImport', ImageImport)
 Quill.register('modules/imageResize', ImageResize)
 // Quill.register({ 'formats/video': Video })
 Quill.register(Font, true)
 
+Quill.register({
+  'formats/svideo': Svideo,
+  'formats/mvideo': Mvideo
+});
 
 
 class Editor extends Component {
   constructor(props) {
     super(props)
-    this.quillRef = null;      // Quill instance
-    this.reactQuillRef = null; // ReactQuill component
+    this.quill = null;      // Quill instance
+    this.reactQuill = null; // ReactQuill component
     this.state = {
       readOnly: false,
       value: "",
       deltas: {}
     }
+
   }
 
   componentDidMount() {
@@ -41,27 +52,72 @@ class Editor extends Component {
   }
   
   attachQuillRefs = () => {
-    if (typeof this.reactQuillRef.getEditor !== 'function') return;
-    this.quillRef = this.reactQuillRef.getEditor();
-    // this.quillRef.format('font', 'sofia')
+    if (typeof this.reactQuill.getEditor !== 'function') return;
+    this.quill = this.reactQuill.getEditor()
+    // this.quill.format('font', 'sofia')
+     // respond to clicks inside the editor
+     this.quill.root.addEventListener('click', this.handleClick, false)
+    //  this.quill.root.quill = this.quill
   }
   
   insertText = () => {
-    var range = this.quillRef.getSelection();
-    let position = range ? range.index : 0;
-    this.quillRef.insertText(position, 'Hello, World! ')
+    var range = this.quill.getSelection()
+    let position = range ? range.index : 0
+    this.quill.insertText(position, 'Hello, World! ')
+  }
+
+  getText = ()=>{
+    const range = this.quill.getSelection()
+    const position = range ? range.index : 0
+    const text = this.quill.getText(position, 10)
+    alert("10 characters from the current position: "+text)
+  }
+
+  formatText = ()=>{
+    const range = this.quill.getSelection()
+    const position = range ? range.index : 0
+    const text = this.quill.formatText(position, 5, 'bold', true )
+  }
+
+  embedImage =()=>{
+    const range = this.quill.getSelection()
+    const position = range ? range.index : 0
+    this.quill.insertEmbed(position, 'image', 'https://picsum.photos/200')
+  }
+
+  embedSmVideo =()=>{
+    var range = this.quill.getSelection()
+    console.log("range>>>", range)
+    const position = range ? range.index : 0
+    this.quill.insertEmbed(position, 'video', 'https://www.youtube.com/embed/QHH3iSeDBLo')
+    this.quill.formatText(position, 1, { 'width': 200, 'height': 200 })
+  }
+  embedMdVideo =()=>{
+    const range = this.quill.getSelection()
+    console.log("range>>>", range)
+    const position = range ? range.index : 0
+    this.quill.insertEmbed(position, 'video', 'https://www.youtube.com/embed/QHH3iSeDBLo')
+    this.quill.formatText(position, 1, { 'width': 400, 'height': 400 })
+  }
+
+  embedLgVideo =()=>{
+    var range = this.quill.getSelection()
+    console.log("range>>>", range)
+    let position = range ? range.index : 0
+    this.quill.insertEmbed(position, 'video', 'https://www.youtube.com/embed/QHH3iSeDBLo')
+    this.quill.formatText(position, 1, { 'width': 600, 'height': 600 })
   }
   
   saveContents = ()=>{
     this.setState({
-      deltas: this.quillRef.getContents()
+      deltas: this.quill.getContents()
     },()=>{
       console.log("this.state.deltas::", this.state.deltas)
     })
   }
 
   loadContents=()=>{
-    this.quillRef.setContents(this.state.deltas)
+    this.quill.setContents(this.state.deltas)
   }
 
   toggleReadOnly=()=>{
@@ -76,6 +132,10 @@ class Editor extends Component {
     })
   }
 
+  handleClick=(e)=>{
+    console.log("e.target!", e.target)
+  }
+
   getStateValue=()=>{
     console.log("this.state.value>>>",this.state.value)
   }
@@ -85,7 +145,7 @@ class Editor extends Component {
       <div className="editor">
         <ReactQuill
           style={{ height: "500px" }}
-          ref={(el) => { this.reactQuillRef = el }}
+          ref={(el) => { this.reactQuill = el }}
           modules={Editor.modules}
           formats={Editor.formats}
           placeHolder={"Add anything here..."}
@@ -95,7 +155,14 @@ class Editor extends Component {
           readOnly={this.state.readOnly}
         />
         <div className="button-panel">
+          <button onClick={this.embedImage}>Embed an image</button>
+          <button onClick={this.embedSmVideo}>Embed a Small video</button>
+          <button onClick={this.embedMdVideo}>Embed a Medium video</button>
+          <button onClick={this.embedLgVideo}>Embed a Large video</button>
           <button onClick={this.insertText}>Insert Text</button>
+          <button onClick={this.formatText}>Format Text</button>
+          <button onClick={this.getText}>Get Text</button>
+
           <button onClick={this.saveContents}>save Deltas Contents Object</button>
           <button onClick={this.loadContents}>load Deltas Contents Object</button>
           <button onClick={this.getStateValue}>get State Value(string)</button>
@@ -126,7 +193,7 @@ Editor.modules = {
      { 'background': ['white', 'red', 'green', 'yellow','blue', '#3293ca','#575452'] }], // dropdown with defaults
     [{ 'font': ['sans-serif', 'inconsolata', 'roboto', 'mirza', 'sofia'] }],                                // font family
     [{ 'align': [] }],                               // text align
-    ['image', 'video'],
+    ['image', 'video', 'svideo', 'mvideo'],
     ['clean'],                                       // remove formatting
   ],
 }
@@ -137,7 +204,7 @@ Editor.formats = [
   'background',
   'list', 'bullet', 'indent', 'align',
   'size', 'color', 'font',
-  'link', 'image', 'video', 'width'
+  'link', 'image', 'video', 'svideo', 'mvideo', 'width', 'height'
 ]
 
 
