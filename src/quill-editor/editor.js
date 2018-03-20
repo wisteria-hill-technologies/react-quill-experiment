@@ -9,7 +9,7 @@ import { ImageImport } from './imageImport'
 
 import './editor.css'
 
-import { Svideo, Mvideo } from './quillVideoFormats'
+// import { Svideo, Mvideo } from './quillVideoFormats'
 // import { Video } from './quill-video-resize'
 // import './quill-video-resize.css'
 
@@ -24,10 +24,10 @@ Quill.register('modules/imageResize', ImageResize)
 // Quill.register({ 'formats/video': Video })
 Quill.register(Font, true)
 
-Quill.register({
-  'formats/svideo': Svideo,
-  'formats/mvideo': Mvideo
-});
+// Quill.register({
+//   'formats/svideo': Svideo,
+//   'formats/mvideo': Mvideo
+// });
 
 
 class Editor extends Component {
@@ -193,10 +193,20 @@ Editor.modules = {
      { 'background': ['white', 'red', 'green', 'yellow','blue', '#3293ca','#575452'] }], // dropdown with defaults
     [{ 'font': ['sans-serif', 'inconsolata', 'roboto', 'mirza', 'sofia'] }],                                // font family
     [{ 'align': [] }],                               // text align
-    ['image', 'video', 'svideo', 'mvideo'],
+    // ['image', 'video', 'svideo', 'mvideo'],
+    ['image', 'video', ],
     ['clean'],                                       // remove formatting
   ],
 }
+
+// Editor.formats = [
+//   'header',
+//   'bold', 'italic', 'underline', 'strike', 'blockquote',
+//   'background',
+//   'list', 'bullet', 'indent', 'align',
+//   'size', 'color', 'font',
+//   'link', 'image', 'video', 'svideo', 'mvideo', 'width', 'height'
+// ]
 
 Editor.formats = [
   'header',
@@ -204,7 +214,7 @@ Editor.formats = [
   'background',
   'list', 'bullet', 'indent', 'align',
   'size', 'color', 'font',
-  'link', 'image', 'video', 'svideo', 'mvideo', 'width', 'height'
+  'link', 'image', 'video', 'width', 'height'
 ]
 
 
