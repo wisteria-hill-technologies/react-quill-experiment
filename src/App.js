@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Editor from './quill-editor/editor'
-// import CustomFormat from './quill-editor/customFormat'
 import './App.css'
 
 class App extends Component {
@@ -10,7 +9,6 @@ class App extends Component {
         <Editor />
         <hr />
         <br />
-        {/* <CustomFormat /> */}
       </div>
     )
   }
