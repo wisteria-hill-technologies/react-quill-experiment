@@ -1,4 +1,4 @@
-import ReactQuill, { Quill } from 'react-quill'
+import { Quill } from 'react-quill'
 const BlockEmbed = Quill.import('blots/block/embed');
 const Parchment = Quill.import('parchment');
 const ATTRIBUTES = [ 'height', 'width' ];
@@ -27,6 +27,11 @@ const getClosest = (el, sel) => {
   return el;
 }
 
+const createSpacer = () => {
+  let spacer = document.createElement('div')
+  spacer.appendChild(document.createElement('br'));
+  return spacer
+}
 
 class VideoBuilder {
   
@@ -44,11 +49,9 @@ class VideoBuilder {
   buildNode(node, wrapper) {
     node.appendChild(wrapper);
     setTimeout(() => {
-      let afterVid = document.createElement('div')
-      afterVid.appendChild(document.createElement('br'));
-      node.parentElement.appendChild(afterVid);
-      let width = node.getAttribute('width');
-      let height = node.getAttribute('height');
+      node.setAttribute('contenteditable', 'false');
+      node.parentElement && node.parentElement.insertBefore(createSpacer(), node)
+      node.parentElement && node.parentElement.appendChild(createSpacer());
       let iframe = node.getElementsByTagName('iframe')[0];
       iframe.setAttribute('width', node.getAttribute('width') || 300);
       iframe.setAttribute('height', node.getAttribute('height') || 150);
@@ -74,6 +77,7 @@ class VideoBuilder {
   }
 
   select(overlay, quill, node) {
+    
     this.selectedElement = overlay;
     if (this.selectedElement.className.indexOf('active') === -1){
       this.quill = quill;
@@ -120,7 +124,7 @@ class VideoBuilder {
   buildAction(type) {
     const button = document.createElement('span');
     button.className = `td-quill-video-align-action td-quill-video-${type}`;
-    button.innerHTML = `<i class="fa td-align-${type}" aria-hidden="true"></i>`;
+    button.innerHTML = `<i class="fa fa-align-${type} td-align-${type}" aria-hidden="true"></i>`;
     button.addEventListener('click', () => {
       this.quill.setSelection(this.node.offset(this.quill.scroll), 1, 'user');
       if (type === 'left') { return this.quill.format('align', null); }
@@ -135,11 +139,11 @@ class VideoBuilder {
     this.dragHandeler = this.handleDrag.bind(this);
     this.mouseUp = this.handelMouseUp.bind(this);
     this.mouseDown = this.handleMousedown.bind(this);
-    Object.keys(nubStyles).map(key => {
+    for(let key in nubStyles){
       let nub = this.buildNub(key);
       this.boxes.push(nub);
       this.selectedElement.appendChild(nub);
-    })
+    }
     return this.selectedElement;
   }
   
@@ -155,8 +159,8 @@ class VideoBuilder {
     this.dragBox = event.target;
     this.dragStartX = event.clientX;
     this.dragStartY = event.clientY;
-    this.preDragWidth = parseInt(this.iframe.width) || 300;
-    this.preDragHeight = parseInt(this.iframe.height) || 150;
+    this.preDragWidth = parseInt(this.iframe.width, 10) || 300;
+    this.preDragHeight = parseInt(this.iframe.height, 10) || 150;
     document.addEventListener('mousemove', this.dragHandeler, false);
     document.addEventListener('mouseup', this.mouseUp, false);
   };
@@ -180,13 +184,13 @@ class VideoBuilder {
   }
 
   clearNubEvents(include_nub){
-    this.boxes.map(nub => {
+    for(let nub in this.boxes){
       document.removeEventListener('mousemove', this.dragHandeler, false);
       document.removeEventListener('mouseup', this.mouseUp, false);
       if (include_nub){
-        nub.removeEventListener('mousedown', this.handleMousedown, false);
+        this.boxes[nub].removeEventListener('mousedown', this.handleMousedown, false);
       }
-    });
+    }
   }
 
 }
