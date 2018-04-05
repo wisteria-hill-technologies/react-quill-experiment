@@ -37,20 +37,25 @@ class Editor extends Component {
   }
 
   componentDidMount() {
-    this.attachQuillRefs()
+    this.attachQuillRefs(true)
   }
   
   componentDidUpdate() {
     this.attachQuillRefs()
   }
   
-  attachQuillRefs = () => {
+  attachQuillRefs = (onMount) => {
     if (typeof this.reactQuill.getEditor !== 'function') return;
     this.quill = this.reactQuill.getEditor()
     // this.quill.format('font', 'sofia')
      // respond to clicks inside the editor
      this.quill.root.addEventListener('click', this.handleClick, false)
      this.quill.root.quill = this.quill
+    if(onMount){
+      let src = 'https://www.youtube.com/embed/o-KdQiObAGM'
+      this.quill.insertEmbed(0, 'video', src, 'user');
+    }
+     
   }
 
   toggleReadOnly=()=>{
